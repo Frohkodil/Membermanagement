@@ -1,0 +1,10 @@
+# Ignore database files
+db
+
+# Ignore Maven build
+target
+
+# Ignore IDEA files
+*.iml
+.idea
+
