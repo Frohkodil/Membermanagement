@@ -7,27 +7,27 @@
 	   xmlns:mvc="http://www.springframework.org/schema/mvc"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
 	<!-- Enable annotation config -->
-	<!--
+
 	<context:annotation-config/>
 	<mvc:annotation-driven/>
-	<context:component-scan base-package="de.nordakademie.iaa.roommgmt.controller"/> -->
+	<context:component-scan base-package="de.nordakademie.iaa.hausarbeit.membermgmt.controller"/>
 
 	<!-- Data source -->
-	<!--
+
 	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"
 		  destroy-method="close">
 		<property name="driverClassName" value="org.h2.Driver"/>
-		<property name="url" value="jdbc:h2:~/temp/db/roommgmt"/>
+		<property name="url" value="jdbc:h2:~/temp/db/NakDB"/>
 		<property name="username" value="sa"/>
 		<property name="password" value=""/>
-	</bean> -->
+	</bean>
 
 	<!-- Entity manager factory -->
-	<!--
+
 	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="persistenceUnitName" value="NakDB"/>
 		<property name="dataSource" ref="dataSource"/>
-		<property name="packagesToScan" value="de.nordakademie.iaa.roommgmt.model"/>
+		<property name="packagesToScan" value="de.nordakademie.iaa.hausarbeit.membermgmt.model"/>
 		<property name="jpaVendorAdapter">
 			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
 		</property>
@@ -39,32 +39,37 @@
 				<prop key="hibernate.format_sql">true</prop>
 			</props>
 		</property>
-	</bean> -->
+	</bean>
 
 	<!-- Transaction configuration -->
 
 	<!-- Transaction manager -->
-	<!--
+
 	<bean id="txManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory"/>
-	</bean> -->
+	</bean>
 
 	<!-- Transaction advice -->
-	<!--
+
 	<tx:advice id="txAdvice" transaction-manager="txManager">
 		<tx:attributes>
 			<tx:method name="*" propagation="REQUIRED"/>
 		</tx:attributes>
-	</tx:advice> -->
+	</tx:advice>
 
 	<!-- AOP configuration with pointcut -->
-	<!--
+
 	<aop:config>
-		<aop:pointcut id="serviceMethods" expression="execution(* de.nordakademie.iaa.roommgmt.service.*.*(..))"/>
+		<aop:pointcut id="serviceMethods" expression="execution(* de.nordakademie.iaa.hausarbeit.membermgmt.service.*.*(..))"/>
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethods"/>
-	</aop:config> -->
+	</aop:config>
 
 	<!-- DAOs -->
+	<bean id="familyDiscountDAO" class="de.nordakademie.iaa.hausarbeit.membermgmt.dao.FamilyDiscountDAO"/>
+	<bean id="memberDAO" class="de.nordakademie.iaa.hausarbeit.membermgmt.dao.MemberDAO"/>
+	<bean id="membershipDAO" class="de.nordakademie.iaa.hausarbeit.membermgmt.dao.MembershipDAO"/>
+	<bean id="membershipTypeDAO" class="de.nordakademie.iaa.hausarbeit.membermgmt.dao.MembershipTypeDAO"/>
+	<bean id="paymentHistoryDAO" class="de.nordakademie.iaa.hausarbeit.membermgmt.dao.PaymentHistoryDAO"/>
 
 	<!-- Services -->
 
