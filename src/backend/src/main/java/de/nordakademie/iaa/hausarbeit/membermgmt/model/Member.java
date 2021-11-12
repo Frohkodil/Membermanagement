@@ -1,4 +1,6 @@
 package de.nordakademie.iaa.hausarbeit.membermgmt.model;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -16,8 +18,15 @@ public class Member implements Serializable {
     private Long id;
     private String firstName;
     private String lastName;
+
+    @NotNull
+    @Size(min=5, max=5)
     private String postalCode ;
+
+
+    private String city;
     private String street;
+    private String streetNumber;
     @Column(nullable = false)
     @Temporal(TemporalType.DATE)
     private LocalDate dateOfBirth;
@@ -112,4 +121,12 @@ public class Member implements Serializable {
     public void setMembership(Membership membership) {
         this.membership = membership;
     }
+
+    public String getCity() { return city; }
+
+    public void setCity(String city) { this.city = city; }
+
+    public String getStreetNumber() { return streetNumber; }
+
+    public void setStreetNumber(String streetNumber) { this.streetNumber = streetNumber; }
 }

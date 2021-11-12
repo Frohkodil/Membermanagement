@@ -72,6 +72,6 @@
 	<bean id="paymentHistoryDAO" class="de.nordakademie.iaa.hausarbeit.membermgmt.dao.PaymentHistoryDAO"/>
 
 	<!-- Services -->
-
+	<bean id="memberService" class="de.nordakademie.iaa.hausarbeit.membermgmt.service.MemberService"/>
 
 </beans>
