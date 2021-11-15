@@ -1,7 +1,11 @@
 package de.nordakademie.iaa.hausarbeit.membermgmt.model;
 
+import org.hibernate.annotations.NaturalId;
+import org.hibernate.validator.constraints.UniqueElements;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -12,8 +16,9 @@ public class MembershipType implements Serializable {
     private static final long serialVersionUID = -2762494933783891656L;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @NaturalId
     private String name;
     private BigDecimal annualFee;
 

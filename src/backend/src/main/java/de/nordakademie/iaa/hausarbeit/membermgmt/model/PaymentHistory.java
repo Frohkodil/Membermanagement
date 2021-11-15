@@ -11,7 +11,7 @@ public class PaymentHistory implements Serializable {
     private static final long serialVersionUID = -1133371029165937387L;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private boolean payed;
     private BigDecimal feePayed;
@@ -61,4 +61,5 @@ public class PaymentHistory implements Serializable {
     public void setYear(int year) {
         this.year = year;
     }
+
 }

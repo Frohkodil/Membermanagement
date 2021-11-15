@@ -13,7 +13,7 @@ public class FamilyDiscount implements Serializable {
     private static final long serialVersionUID = 890835859531813271L;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private BigDecimal discount;
 

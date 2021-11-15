@@ -2,9 +2,11 @@ package de.nordakademie.iaa.hausarbeit.membermgmt.controller.MemberController;
 
 
 import de.nordakademie.iaa.hausarbeit.membermgmt.model.Member;
+import de.nordakademie.iaa.hausarbeit.membermgmt.model.Membership;
 import de.nordakademie.iaa.hausarbeit.membermgmt.service.EntityAlreadyPresentException;
 import de.nordakademie.iaa.hausarbeit.membermgmt.service.MemberService;
 import de.nordakademie.iaa.hausarbeit.membermgmt.service.MembershipStillActiveException;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,6 +38,8 @@ public class MemberController {
         }
         catch (EntityAlreadyPresentException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        } catch (ConstraintViolationException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
 
@@ -51,7 +55,7 @@ public class MemberController {
     }
 
     @RequestMapping(path = "/{id}", method = DELETE)
-    public ResponseEntity<?> deleteMember(@PathVariable Long id) {
+    public ResponseEntity<?> deleteMember(@PathVariable("id") Long id) {
         try {
             memberService.deleteMember(id);
             return ResponseEntity.ok().build();
@@ -67,6 +71,16 @@ public class MemberController {
     @RequestMapping(method = GET)
     public List<Member> listMembers() {
         return MemberService.listMembers();
+    }
+
+    @RequestMapping(path = "/{id}", method = GET)
+    public ResponseEntity<?> loadMember(@PathVariable("id") Long id) {
+        try {
+            memberService.loadMember(id);
+            return ResponseEntity.ok().build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @Inject

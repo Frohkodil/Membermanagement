@@ -51,16 +51,17 @@ public class MemberService {
         member.setFamilyMember(familyMember);
     }
 
-    private Member loadMember(Long id) {
-        return memberDAO.loadMember(id);
+    public Member loadMember(Long id) {
+          Member member = memberDAO.loadMember(id);
+          if (member == null) {
+                  throw new EntityNotFoundException();
+          } else return member;
     }
 
     //todo membershipstillactiveexception durch constraintviolationexception ersetzen ??
     public void deleteMember(Long id) throws MembershipStillActiveException {
         Member member = loadMember(id);
-        if(member == null) {
-            throw new EntityNotFoundException();
-        } else if(member.getMembership() != null) {
+        if(member.getMembership() != null) {
             throw new MembershipStillActiveException();
         } else {
             memberDAO.deleteMember(member);

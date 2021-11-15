@@ -1,5 +1,7 @@
 package de.nordakademie.iaa.hausarbeit.membermgmt.model;
 
+import jakarta.validation.constraints.NotNull;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -10,9 +12,10 @@ public class Membership implements Serializable{
     private static final long serialVersionUID = 1039155052784138042L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Temporal(TemporalType.DATE)
+    @NotNull
     private LocalDate startDate;
     @Temporal(TemporalType.DATE)
     private LocalDate endDate;
