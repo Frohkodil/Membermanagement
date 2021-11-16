@@ -4,17 +4,19 @@ import de.nordakademie.iaa.hausarbeit.membermgmt.dao.MembershipDAO;
 import de.nordakademie.iaa.hausarbeit.membermgmt.model.Membership;
 import de.nordakademie.iaa.hausarbeit.membermgmt.model.MembershipType;
 import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
+@Service
 public class MembershipService {
     private MembershipDAO membershipDAO;
 
     public List<Membership> listMemberships() {
-        return MembershipDAO.listMemberships();
+        return membershipDAO.listMemberships();
     }
 
     public void createMembership(Membership membership) throws EntityAlreadyPresentException {
@@ -29,7 +31,7 @@ public class MembershipService {
         return membershipDAO.loadMembership(id);
     }
 
-    public void updateMembership(Long id, LocalDate startDate, LocalDate endDate, LocalDate cancellationDate, MembershipType membershipType) {
+    public void updateMembership(Long id, Date startDate, Date endDate, Date cancellationDate, MembershipType membershipType) {
         Membership membership = membershipDAO.loadMembership(id);
         if(membership == null) {
             throw new EntityNotFoundException();

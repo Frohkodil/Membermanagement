@@ -1,4 +1,4 @@
-package de.nordakademie.iaa.hausarbeit.membermgmt.controller.MemberController;
+package de.nordakademie.iaa.hausarbeit.membermgmt.controller;
 
 
 import de.nordakademie.iaa.hausarbeit.membermgmt.model.Member;
@@ -70,7 +70,7 @@ public class MemberController {
 
     @RequestMapping(method = GET)
     public List<Member> listMembers() {
-        return MemberService.listMembers();
+        return memberService.listMembers();
     }
 
     @RequestMapping(path = "/{id}", method = GET)

@@ -1,4 +1,4 @@
-package de.nordakademie.iaa.hausarbeit.membermgmt.controller.MemberController;
+package de.nordakademie.iaa.hausarbeit.membermgmt.controller;
 
 import de.nordakademie.iaa.hausarbeit.membermgmt.model.FamilyDiscount;
 import de.nordakademie.iaa.hausarbeit.membermgmt.service.FamilyDiscountService;

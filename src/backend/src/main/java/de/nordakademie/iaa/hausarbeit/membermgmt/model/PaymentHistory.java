@@ -3,7 +3,7 @@ package de.nordakademie.iaa.hausarbeit.membermgmt.model;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 public class PaymentHistory implements Serializable {
@@ -16,7 +16,7 @@ public class PaymentHistory implements Serializable {
     private boolean payed;
     private BigDecimal feePayed;
     @Temporal(TemporalType.DATE)
-    private LocalDate dateOfPayment;
+    private Date dateOfPayment;
     private int year;
 
     public PaymentHistory() {
@@ -46,11 +46,11 @@ public class PaymentHistory implements Serializable {
         this.feePayed = feePayed;
     }
 
-    public LocalDate getDateOfPayment() {
+    public Date getDateOfPayment() {
         return dateOfPayment;
     }
 
-    public void setDateOfPayment(LocalDate dateOfPayment) {
+    public void setDateOfPayment(Date dateOfPayment) {
         this.dateOfPayment = dateOfPayment;
     }
 

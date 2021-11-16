@@ -1,19 +1,20 @@
-package de.nordakademie.iaa.hausarbeit.membermgmt.controller.MemberController;
+package de.nordakademie.iaa.hausarbeit.membermgmt.controller;
 
 import de.nordakademie.iaa.hausarbeit.membermgmt.model.Membership;
 import de.nordakademie.iaa.hausarbeit.membermgmt.model.MembershipType;
 import de.nordakademie.iaa.hausarbeit.membermgmt.service.EntityAlreadyPresentException;
-import de.nordakademie.iaa.hausarbeit.membermgmt.service.MemberService;
 import de.nordakademie.iaa.hausarbeit.membermgmt.service.MembershipService;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
-
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.CONFLICT;
@@ -39,7 +40,7 @@ public class MembershipController {
         }
 
         @RequestMapping(path = "/{id}", method = PUT)
-        public ResponseEntity<?> updateMembership(@RequestBody Long id, LocalDate startDate, LocalDate endDate, LocalDate cancellationDate, MembershipType membershipType) {
+        public ResponseEntity<?> updateMembership(@RequestBody Long id, Date startDate, Date endDate, Date cancellationDate, MembershipType membershipType) {
             try{
                 membershipService.updateMembership(id, startDate, endDate, cancellationDate, membershipType);
                 return ResponseEntity.status(CREATED).build();
@@ -51,7 +52,7 @@ public class MembershipController {
 
         @RequestMapping(method = GET)
         public List<Membership> listMemberships() {
-            return MembershipService.listMemberships();
+            return membershipService.listMemberships();
         }
 
         @RequestMapping(path="/{id}", method = GET)

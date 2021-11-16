@@ -1,10 +1,10 @@
 package de.nordakademie.iaa.hausarbeit.membermgmt.model;
 
-import jakarta.validation.constraints.NotNull;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 public class Membership implements Serializable{
@@ -16,11 +16,11 @@ public class Membership implements Serializable{
     private Long id;
     @Temporal(TemporalType.DATE)
     @NotNull
-    private LocalDate startDate;
+    private Date startDate;
     @Temporal(TemporalType.DATE)
-    private LocalDate endDate;
+    private Date endDate;
     @Temporal(TemporalType.DATE)
-    private LocalDate cancellationDate;
+    private Date cancellationDate;
     @ManyToOne
     private MembershipType membershipType;
 
@@ -35,27 +35,27 @@ public class Membership implements Serializable{
         this.id = id;
     }
 
-    public LocalDate getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDate getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
-    public LocalDate getCancellationDate() {
+    public Date getCancellationDate() {
         return cancellationDate;
     }
 
-    public void setCancellationDate(LocalDate cancellationDate) {
+    public void setCancellationDate(Date cancellationDate) {
         this.cancellationDate = cancellationDate;
     }
 

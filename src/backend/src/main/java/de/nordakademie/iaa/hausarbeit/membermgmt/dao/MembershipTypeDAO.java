@@ -1,11 +1,13 @@
 package de.nordakademie.iaa.hausarbeit.membermgmt.dao;
 
 import de.nordakademie.iaa.hausarbeit.membermgmt.model.MembershipType;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
+@Repository
 public class MembershipTypeDAO {
     private EntityManager entityManager;
 

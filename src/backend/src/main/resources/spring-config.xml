@@ -14,8 +14,7 @@
 
 	<!-- Data source -->
 
-	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"
-		  destroy-method="close">
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="org.h2.Driver"/>
 		<property name="url" value="jdbc:h2:~/temp/db/NakDB"/>
 		<property name="username" value="sa"/>
@@ -35,6 +34,7 @@
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.H2Dialect</prop>
 				<prop key="hibernate.hbm2ddl.auto">create</prop>
+				<prop key="spring.jpa.hibernate.ddl-auto">create</prop>
 				<prop key="hibernate.show_sql">true</prop>
 				<prop key="hibernate.format_sql">true</prop>
 			</props>
@@ -64,17 +64,5 @@
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethods"/>
 	</aop:config>
 
-	<!-- DAOs -->
-	<bean id="familyDiscountDAO" class="de.nordakademie.iaa.hausarbeit.membermgmt.dao.FamilyDiscountDAO"/>
-	<bean id="memberDAO" class="de.nordakademie.iaa.hausarbeit.membermgmt.dao.MemberDAO"/>
-	<bean id="membershipDAO" class="de.nordakademie.iaa.hausarbeit.membermgmt.dao.MembershipDAO"/>
-	<bean id="membershipTypeDAO" class="de.nordakademie.iaa.hausarbeit.membermgmt.dao.MembershipTypeDAO"/>
-	<bean id="paymentHistoryDAO" class="de.nordakademie.iaa.hausarbeit.membermgmt.dao.PaymentHistoryDAO"/>
-
-	<!-- Services -->
-	<bean id="memberService" class="de.nordakademie.iaa.hausarbeit.membermgmt.service.MemberService"/>
-	<bean id="membershipService" class="de.nordakademie.iaa.hausarbeit.membermgmt.service.MembershipService"/>
-	<bean id="membershipTypeService" class="de.nordakademie.iaa.hausarbeit.membermgmt.service.MembershipTypeService"/>
-	<bean id="familyDiscountService" class="de.nordakademie.iaa.hausarbeit.membermgmt.service.FamilyDiscountService"/>
 
 </beans>

@@ -1,11 +1,10 @@
-package de.nordakademie.iaa.hausarbeit.membermgmt.controller.MemberController;
+package de.nordakademie.iaa.hausarbeit.membermgmt.controller;
 
 
 import de.nordakademie.iaa.hausarbeit.membermgmt.model.Membership;
 import de.nordakademie.iaa.hausarbeit.membermgmt.model.MembershipType;
 import de.nordakademie.iaa.hausarbeit.membermgmt.service.EntityAlreadyPresentException;
 import de.nordakademie.iaa.hausarbeit.membermgmt.service.MembershipTypeService;
-import de.nordakademie.iaa.hausarbeit.membermgmt.service.MembershiptypeService;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,7 +55,7 @@ public class MembershipTypeController {
 
     @RequestMapping(method = GET)
     public List<MembershipType> listMembershipTypes() {
-        return MembershipTypeService.listMembershipTypes();
+        return membershipTypeService.listMembershipTypes();
     }
 
     @RequestMapping(path="/{id}", method = GET)

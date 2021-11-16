@@ -6,13 +6,15 @@ import de.nordakademie.iaa.hausarbeit.membermgmt.model.Member;
 import de.nordakademie.iaa.hausarbeit.membermgmt.model.Membership;
 import de.nordakademie.iaa.hausarbeit.membermgmt.model.PaymentHistory;
 import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
-
+@Service
 public class MemberService {
     private MemberDAO memberDAO;
 
@@ -32,7 +34,7 @@ public class MemberService {
         }
 
     }
-    public void updateMember(Long id, String firstName, String lastName, String postalCode, String city, String street, String streetNumber, LocalDate dateOfBirth, Membership membership, String iban, List<PaymentHistory> paymentHistory, Member familyMember) throws EntityNotFoundException {
+    public void updateMember(Long id, String firstName, String lastName, String postalCode, String city, String street, String streetNumber, Date dateOfBirth, Membership membership, String iban, List<PaymentHistory> paymentHistory, Member familyMember) throws EntityNotFoundException {
         Member member = loadMember(id);
         if(member == null) {
             throw new EntityNotFoundException();

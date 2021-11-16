@@ -1,10 +1,11 @@
 package de.nordakademie.iaa.hausarbeit.membermgmt.model;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 
@@ -29,7 +30,7 @@ public class Member implements Serializable {
     private String streetNumber;
     @Column(nullable = false)
     @Temporal(TemporalType.DATE)
-    private LocalDate dateOfBirth;
+    private Date dateOfBirth;
     private String iban;
     @OneToMany
     private List<PaymentHistory> paymentHistories;
@@ -82,11 +83,11 @@ public class Member implements Serializable {
         this.street = street;
     }
 
-    public LocalDate getDateOfBirth() {
+    public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(LocalDate dateOfBirth) {
+    public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
