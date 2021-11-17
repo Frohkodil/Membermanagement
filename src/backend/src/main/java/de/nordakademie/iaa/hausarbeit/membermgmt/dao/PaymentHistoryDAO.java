@@ -6,29 +6,43 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-public class PaymentHistoryDAO {
+public class PaymentHistoryDAO implements DAO<PaymentHistory>{
     private EntityManager entityManager;
-
-    public void persistPaymentHistory(PaymentHistory paymentHistory) {
-        entityManager.persist(paymentHistory);
-    }
 
     @PersistenceContext
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
-    public PaymentHistory loadPaymentHistory(Long id) {
-        return entityManager.find(PaymentHistory.class, id);
-    }
-
-    public List<PaymentHistory> listPaymentHistoryByYear(int year) {
+    public List<PaymentHistory> getPaymentHistoryByYear(int year) {
         return entityManager.createQuery("select * from PaymentHistory where year = year").getResultList();
     }
 
-    public List<PaymentHistory> listPaymentHistory() {
+    @Override
+    public Optional<PaymentHistory> get(Long id) {
+        return Optional.ofNullable(entityManager.find(PaymentHistory.class, id));
+    }
+
+    @Override
+    public List<PaymentHistory> getAll() {
         return entityManager.createQuery("select * from PaymentHistory").getResultList();
+    }
+
+    @Override
+    public void save(PaymentHistory paymentHistory) {
+        entityManager.persist(paymentHistory);
+    }
+
+    @Override
+    public void update(PaymentHistory paymentHistory) {
+
+    }
+
+    @Override
+    public void delete(PaymentHistory paymentHistory) {
+
     }
 }

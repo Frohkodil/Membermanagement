@@ -9,10 +9,7 @@ import de.nordakademie.iaa.hausarbeit.membermgmt.service.MembershipStillActiveEx
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
@@ -76,12 +73,24 @@ public class MemberController {
     @RequestMapping(path = "/{id}", method = GET)
     public ResponseEntity<?> loadMember(@PathVariable("id") Long id) {
         try {
-            memberService.loadMember(id);
-            return ResponseEntity.ok().build();
+            Member member = memberService.loadMember(id);
+            return ResponseEntity.ok(member);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @RequestMapping(path = "/search", method = GET)
+    public ResponseEntity<?> searchMember(@RequestParam String searchBase64) {
+        List<Member> searchMembers = memberService.searchMembers(searchBase64);
+        if(searchMembers.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        else {
+            return ResponseEntity.ok(searchMembers);
+        }
+    }
+
 
     @Inject
     public void setMemberService(MemberService memberService) {

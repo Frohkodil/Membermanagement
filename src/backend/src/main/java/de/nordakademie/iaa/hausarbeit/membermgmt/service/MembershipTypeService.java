@@ -15,26 +15,22 @@ public class MembershipTypeService {
     private MembershipTypeDAO membershipTypeDAO;
 
     public List<MembershipType> listMembershipTypes() {
-        return membershipTypeDAO.listMembershipTypes();
+        return membershipTypeDAO.getAll();
     }
 
     public MembershipType loadMembershipType(Long id) {
-        MembershipType membershipType = membershipTypeDAO.loadMembership(id);
-        return membershipType;
+       return membershipTypeDAO.get(id).orElseThrow(EntityNotFoundException::new);
     }
 
     public void updateMembershipType(Long id, String name, BigDecimal annualFee) {
         MembershipType membershipType = loadMembershipType(id);
-        if(membershipType == null) {
-            throw new EntityNotFoundException();
-        }
         membershipType.setAnnualFee(annualFee);
         membershipType.setName(name);
     }
 
     public void createMembershipType(MembershipType membershipType) throws EntityAlreadyPresentException {
         try {
-            membershipTypeDAO.persistMembershipType(membershipType);
+            membershipTypeDAO.save(membershipType);
         } catch (ConstraintViolationException e) {
             throw new EntityAlreadyPresentException();
         }
@@ -43,8 +39,5 @@ public class MembershipTypeService {
     @Inject
     public void setMembershipTypeDAO(MembershipTypeDAO membershipTypeDAO) {
         this.membershipTypeDAO = membershipTypeDAO;
-    }
-
-    public void loadMembership(Long id) {
     }
 }

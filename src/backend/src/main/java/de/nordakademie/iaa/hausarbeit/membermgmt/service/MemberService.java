@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
-import java.time.LocalDate;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
@@ -18,16 +18,23 @@ import java.util.List;
 public class MemberService {
     private MemberDAO memberDAO;
 
+    public List<Member> searchMembers(String searchBase64) {
+        byte[] decodedBytes = Base64.getUrlDecoder().decode(searchBase64);
+        String searchJSON = new String(decodedBytes);
+
+        return null;
+    }
+
     //todo das hier fixen
     @SuppressWarnings("unchecked")
     public List<Member> listMembers() {
-        return memberDAO.listMembers();
+        return memberDAO.getAll();
     }
 
     public void createMember(Member member) throws EntityAlreadyPresentException {
         //todo input validation
         try {
-            memberDAO.persistMember(member);
+            memberDAO.save(member);
         }
         catch (ConstraintViolationException e) {
             throw new EntityAlreadyPresentException();
@@ -36,9 +43,6 @@ public class MemberService {
     }
     public void updateMember(Long id, String firstName, String lastName, String postalCode, String city, String street, String streetNumber, Date dateOfBirth, Membership membership, String iban, List<PaymentHistory> paymentHistory, Member familyMember) throws EntityNotFoundException {
         Member member = loadMember(id);
-        if(member == null) {
-            throw new EntityNotFoundException();
-        }
         //todo input validation
         member.setFirstName(firstName);
         member.setLastName(lastName);
@@ -54,10 +58,7 @@ public class MemberService {
     }
 
     public Member loadMember(Long id) {
-          Member member = memberDAO.loadMember(id);
-          if (member == null) {
-                  throw new EntityNotFoundException();
-          } else return member;
+        return memberDAO.get(id).orElseThrow(EntityNotFoundException::new);
     }
 
     //todo membershipstillactiveexception durch constraintviolationexception ersetzen ??
@@ -65,9 +66,8 @@ public class MemberService {
         Member member = loadMember(id);
         if(member.getMembership() != null) {
             throw new MembershipStillActiveException();
-        } else {
-            memberDAO.deleteMember(member);
         }
+        memberDAO.delete(member);
     }
 
     @Inject

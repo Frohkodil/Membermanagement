@@ -16,26 +16,23 @@ public class MembershipService {
     private MembershipDAO membershipDAO;
 
     public List<Membership> listMemberships() {
-        return membershipDAO.listMemberships();
+        return membershipDAO.getAll();
     }
 
     public void createMembership(Membership membership) throws EntityAlreadyPresentException {
         try {
-            membershipDAO.persistMembership(membership);
+            membershipDAO.save(membership);
         } catch (ConstraintViolationException e) {
             throw new EntityAlreadyPresentException();
         }
     }
 
     public Membership loadMembership(Long id) {
-        return membershipDAO.loadMembership(id);
+        return membershipDAO.get(id).orElseThrow(EntityNotFoundException::new);
     }
 
     public void updateMembership(Long id, Date startDate, Date endDate, Date cancellationDate, MembershipType membershipType) {
-        Membership membership = membershipDAO.loadMembership(id);
-        if(membership == null) {
-            throw new EntityNotFoundException();
-        }
+        Membership membership = loadMembership(id);
         membership.setMembershipType(membershipType);
         membership.setCancellationDate(cancellationDate);
         membership.setEndDate(endDate);

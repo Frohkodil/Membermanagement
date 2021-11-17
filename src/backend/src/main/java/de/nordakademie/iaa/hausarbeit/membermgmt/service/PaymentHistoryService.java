@@ -27,24 +27,20 @@ public class PaymentHistoryService {
     }
 
     public List<PaymentHistory> listPaymentHistories() {
-        return paymentHistoryDAO.listPaymentHistory();
+        return paymentHistoryDAO.getAll();
     }
 
     public PaymentHistory loadPaymentHistory(Long id) {
-        PaymentHistory paymentHistory = paymentHistoryDAO.loadPaymentHistory(id);
-        if(paymentHistory == null) {
-            throw new EntityNotFoundException();
-        }
-        return paymentHistory;
+        return paymentHistoryDAO.get(id).orElseThrow(EntityNotFoundException::new);
     }
 
     public List<PaymentHistory> getPaymentHistoryByYear(int year) {
-        return paymentHistoryDAO.listPaymentHistoryByYear(year);
+        return paymentHistoryDAO.getPaymentHistoryByYear(year);
     }
 
     public void createPaymentHistory(PaymentHistory paymentHistory) throws EntityAlreadyPresentException {
         try {
-            paymentHistoryDAO.persistPaymentHistory(paymentHistory);
+            paymentHistoryDAO.save(paymentHistory);
         } catch (ConstraintViolationException e) {
             throw new EntityAlreadyPresentException();
         }

@@ -6,9 +6,10 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-public class MembershipTypeDAO {
+public class MembershipTypeDAO implements DAO<MembershipType>{
     private EntityManager entityManager;
 
 
@@ -17,15 +18,28 @@ public class MembershipTypeDAO {
         this.entityManager = entityManager;
     }
 
-    public void persistMembershipType(MembershipType membershipType) {
+    @Override
+    public Optional<MembershipType> get(Long id) {
+        return Optional.ofNullable(entityManager.find(MembershipType.class, id));
+    }
+
+    @Override
+    public List<MembershipType> getAll() {
+        return entityManager.createQuery("select membershipType from MembershipType membershipType").getResultList();
+    }
+
+    @Override
+    public void save(MembershipType membershipType) {
         entityManager.persist(membershipType);
     }
 
-    public MembershipType loadMembership(Long id) {
-        return entityManager.find(MembershipType.class, id);
+    @Override
+    public void update(MembershipType membershipType) {
+
     }
 
-    public List<MembershipType> listMembershipTypes() {
-        return entityManager.createQuery("select membershiptype from MembershipType").getResultList();
+    @Override
+    public void delete(MembershipType membershipType) {
+
     }
 }
