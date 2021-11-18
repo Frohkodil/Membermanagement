@@ -1,6 +1,7 @@
 package de.nordakademie.iaa.hausarbeit.membermgmt.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Past;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -16,6 +17,7 @@ public class PaymentHistory implements Serializable {
     private boolean payed;
     private BigDecimal feePayed;
     @Temporal(TemporalType.DATE)
+    @Past
     private Date dateOfPayment;
     private int year;
 

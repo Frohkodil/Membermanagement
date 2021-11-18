@@ -1,0 +1,11 @@
+FROM maven:3.6.3-openjdk-11
+RUN mkdir /app
+WORKDIR /app
+COPY pom.xml /app
+RUN mvn dependency:resolve
+COPY src/ /app/src
+RUN mvn clean package
+
+FROM openjdk:11.0.10-jre-slim
+COPY --from=0 /app/target/Membermanagement.jar /Membermanagement.jar
+ENTRYPOINT ["java", "-jar", "/Membermanagement.jar"]

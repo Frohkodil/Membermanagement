@@ -61,7 +61,7 @@ public class MembershipTypeController {
     @RequestMapping(path="/{id}", method = GET)
     public ResponseEntity<?> loadMembership(@PathVariable("id") Long id) {
         try {
-            membershipTypeService.loadMembership(id);
+            membershipTypeService.loadMembershipType(id);
             return ResponseEntity.ok().build();
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();

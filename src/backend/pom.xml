@@ -13,6 +13,21 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>membermgmt</name>
     <description>IAA Hausarbeit Mitgliederverwaltung</description>
+    <organization>
+        <name>Nordakademie gAG Elmshorn</name>
+        <url>http://www.nordakademie.de</url>
+    </organization>
+    <developers>
+        <developer>
+            <name>Nadine Dithmer</name>
+            <email>nadine.dithmer@nordakademie.de</email>
+        </developer>
+        <developer>
+            <name>Siebo Vogel</name>
+            <email>siebo.vogel@nordakademie.de</email>
+        </developer>
+    </developers>
+
     <properties>
         <java.version>11</java.version>
     </properties>
@@ -24,6 +39,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.12.0</version>
         </dependency>
 
         <dependency>
@@ -43,7 +64,6 @@
             <version>5.4.17.Final</version>
         </dependency>
 
-
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
@@ -61,12 +81,18 @@
     </dependencies>
 
     <build>
+        <finalName>Membermanagement</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.5.4</version>
+                <configuration>
+                    <mainClass>de.nordakademie.iaa.hausarbeit.membermgmt.Application</mainClass>
+                </configuration>
             </plugin>
         </plugins>
     </build>
+
 
 </project>

@@ -2,9 +2,11 @@ package de.nordakademie.iaa.hausarbeit.membermgmt.controller;
 
 
 import de.nordakademie.iaa.hausarbeit.membermgmt.model.Member;
+import de.nordakademie.iaa.hausarbeit.membermgmt.model.MemberSearchParameters;
 import de.nordakademie.iaa.hausarbeit.membermgmt.model.Membership;
 import de.nordakademie.iaa.hausarbeit.membermgmt.service.EntityAlreadyPresentException;
 import de.nordakademie.iaa.hausarbeit.membermgmt.service.MemberService;
+import de.nordakademie.iaa.hausarbeit.membermgmt.service.MembershipService;
 import de.nordakademie.iaa.hausarbeit.membermgmt.service.MembershipStillActiveException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
@@ -24,13 +26,14 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 @RequestMapping(path="/members")
 public class MemberController {
 
-
     private MemberService memberService;
+    private MembershipService membershipService;
 
     @RequestMapping(method = POST)
-    public ResponseEntity<?> createMember(@RequestBody Member member) {
+    public ResponseEntity<?> createMember(@RequestBody Member member, @RequestBody Membership membership) {
         try {
             memberService.createMember(member);
+            membershipService.createMembership(membership);
             return ResponseEntity.status(CREATED).build();
         }
         catch (EntityAlreadyPresentException e) {
@@ -71,7 +74,7 @@ public class MemberController {
     }
 
     @RequestMapping(path = "/{id}", method = GET)
-    public ResponseEntity<?> loadMember(@PathVariable("id") Long id) {
+    public ResponseEntity<Member> loadMember(@PathVariable("id") Long id) {
         try {
             Member member = memberService.loadMember(id);
             return ResponseEntity.ok(member);
@@ -80,9 +83,9 @@ public class MemberController {
         }
     }
 
-    @RequestMapping(path = "/search", method = GET)
-    public ResponseEntity<?> searchMember(@RequestParam String searchBase64) {
-        List<Member> searchMembers = memberService.searchMembers(searchBase64);
+    @RequestMapping(path = "/search", method = POST)
+    public ResponseEntity<List<Member>> searchMember(@RequestBody MemberSearchParameters memberSearchParameters) {
+        List<Member> searchMembers = memberService.searchMembers(memberSearchParameters);
         if(searchMembers.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
@@ -95,6 +98,11 @@ public class MemberController {
     @Inject
     public void setMemberService(MemberService memberService) {
         this.memberService = memberService;
+    }
+
+    @Inject
+    public void setMembershipService(MembershipService membershipService) {
+        this.membershipService = membershipService;
     }
 
 }

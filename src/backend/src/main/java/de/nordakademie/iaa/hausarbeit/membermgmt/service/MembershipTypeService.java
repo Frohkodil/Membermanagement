@@ -3,6 +3,7 @@ package de.nordakademie.iaa.hausarbeit.membermgmt.service;
 import de.nordakademie.iaa.hausarbeit.membermgmt.dao.MembershipTypeDAO;
 import de.nordakademie.iaa.hausarbeit.membermgmt.model.MembershipType;
 import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @Service
 public class MembershipTypeService {
+
     private MembershipTypeDAO membershipTypeDAO;
 
     public List<MembershipType> listMembershipTypes() {
@@ -35,7 +37,7 @@ public class MembershipTypeService {
             throw new EntityAlreadyPresentException();
         }
     }
-    
+
     @Inject
     public void setMembershipTypeDAO(MembershipTypeDAO membershipTypeDAO) {
         this.membershipTypeDAO = membershipTypeDAO;
