@@ -17,31 +17,21 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class MemberDAO implements DAO<Member> {
+public class MemberDAO {
     private EntityManager entityManager;
 
-
-    @Override
     public Optional<Member> get(Long id) {
         return Optional.ofNullable(entityManager.find(Member.class, id));
     }
 
-    @Override
     public List<Member> getAll() {
         return entityManager.createQuery("from Member", Member.class).getResultList();
     }
 
-    @Override
     public void save(Member member) throws ConstraintViolationException {
         entityManager.persist(member);
     }
 
-    @Override
-    public void update(Member member) {
-
-    }
-
-    @Override
     public void delete(Member member) {
         entityManager.remove(member);
     }
@@ -55,7 +45,6 @@ public class MemberDAO implements DAO<Member> {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Member> query = criteriaBuilder.createQuery(Member.class);
         Root<Member> member = query.from(Member.class);
-
         List<Predicate> predicates = new ArrayList<>();
         if (StringUtils.isNotEmpty(memberSearchParameters.getFirstName()))
             predicates.add(criteriaBuilder.equal(member.get("firstName"), memberSearchParameters.getFirstName()));
@@ -65,11 +54,13 @@ public class MemberDAO implements DAO<Member> {
             predicates.add(criteriaBuilder.equal(member.get("postalCode"), memberSearchParameters.getPostalCode()));
         if (StringUtils.isNotEmpty(memberSearchParameters.getCity()))
             predicates.add(criteriaBuilder.equal(member.get("city"), memberSearchParameters.getCity()));
-       // if (StringUtils.isNotEmpty(memberSearchParameters.getDateOfBirth()))
-        //    predicates.add(criteriaBuilder.equal(member.get("firstName"), memberSearchParameters.getFirstName()));
-
-
+        if (memberSearchParameters.getDateOfBirth() != null)
+            predicates.add(criteriaBuilder.equal(member.get("dateOfBirth"), memberSearchParameters.getDateOfBirth()));
         query.select(member).where(predicates.toArray(new Predicate[]{}));
         return entityManager.createQuery(query).getResultList();
+    }
+
+    public List<Member> getActiveMembers() {
+        return entityManager.createQuery("from Member where exists (from Membership where endDate = null)", Member.class).getResultList();
     }
 }

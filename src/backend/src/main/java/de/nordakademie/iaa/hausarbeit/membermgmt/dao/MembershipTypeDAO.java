@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class MembershipTypeDAO implements DAO<MembershipType>{
+public class MembershipTypeDAO {
     private EntityManager entityManager;
 
 
@@ -18,27 +18,22 @@ public class MembershipTypeDAO implements DAO<MembershipType>{
         this.entityManager = entityManager;
     }
 
-    @Override
     public Optional<MembershipType> get(Long id) {
         return Optional.ofNullable(entityManager.find(MembershipType.class, id));
     }
 
-    @Override
     public List<MembershipType> getAll() {
-        return entityManager.createQuery("select membershipType from MembershipType membershipType").getResultList();
+        return entityManager.createQuery("from MembershipType").getResultList();
     }
 
-    @Override
     public void save(MembershipType membershipType) {
         entityManager.persist(membershipType);
     }
 
-    @Override
     public void update(MembershipType membershipType) {
 
     }
 
-    @Override
     public void delete(MembershipType membershipType) {
 
     }

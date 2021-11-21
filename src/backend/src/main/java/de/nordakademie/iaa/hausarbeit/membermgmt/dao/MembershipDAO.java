@@ -9,30 +9,25 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class MembershipDAO implements DAO<Membership>{
+public class MembershipDAO{
     private EntityManager entityManager;
 
-    @Override
     public Optional<Membership> get(Long id) {
         return Optional.ofNullable(entityManager.find(Membership.class, id));
     }
 
-    @Override
     public List<Membership> getAll() {
-        return entityManager.createQuery("select * from Membership ").getResultList();
+        return entityManager.createQuery("from Membership").getResultList();
     }
 
-    @Override
     public void save(Membership membership) {
-
+        entityManager.persist(membership);
     }
 
-    @Override
     public void update(Membership membership) {
 
     }
 
-    @Override
     public void delete(Membership membership) {
 
     }

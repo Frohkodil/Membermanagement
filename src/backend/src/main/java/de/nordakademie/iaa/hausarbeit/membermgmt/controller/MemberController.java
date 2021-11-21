@@ -4,10 +4,7 @@ package de.nordakademie.iaa.hausarbeit.membermgmt.controller;
 import de.nordakademie.iaa.hausarbeit.membermgmt.model.Member;
 import de.nordakademie.iaa.hausarbeit.membermgmt.model.MemberSearchParameters;
 import de.nordakademie.iaa.hausarbeit.membermgmt.model.Membership;
-import de.nordakademie.iaa.hausarbeit.membermgmt.service.EntityAlreadyPresentException;
-import de.nordakademie.iaa.hausarbeit.membermgmt.service.MemberService;
-import de.nordakademie.iaa.hausarbeit.membermgmt.service.MembershipService;
-import de.nordakademie.iaa.hausarbeit.membermgmt.service.MembershipStillActiveException;
+import de.nordakademie.iaa.hausarbeit.membermgmt.service.*;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +12,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
+import javax.validation.Valid;
 
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
@@ -30,23 +29,20 @@ public class MemberController {
     private MembershipService membershipService;
 
     @RequestMapping(method = POST)
-    public ResponseEntity<?> createMember(@RequestBody Member member, @RequestBody Membership membership) {
+    public ResponseEntity<?> createMember(@Valid @RequestBody Member member, @Valid @RequestBody Membership membership) {
         try {
             memberService.createMember(member);
             membershipService.createMembership(membership);
             return ResponseEntity.status(CREATED).build();
-        }
-        catch (EntityAlreadyPresentException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        } catch (ConstraintViolationException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        } catch (IllegalDateException e) {
+            return ResponseEntity.status(BAD_REQUEST).body(e.getMessage());
         }
     }
 
     @RequestMapping(path = "/{id}", method = PUT)
-    public ResponseEntity<?> updateMember(@PathVariable("id") Long id, @RequestBody Member member) {
+    public ResponseEntity<?> updateMember(@PathVariable("id") Long id, @Valid @RequestBody Member member) {
         try {
-            memberService.updateMember(id, member.getFirstName(), member.getLastName(), member.getPostalCode(), member.getCity(), member.getStreet(), member.getStreetNumber(), member.getDateOfBirth(), member.getMembership(), member.getIban(), member.getPaymentHistories(), member.getFamilyMember());
+            memberService.updateMember(id, member);
             return ResponseEntity.status(CREATED).build();
         }
         catch (EntityNotFoundException e) {
@@ -84,14 +80,21 @@ public class MemberController {
     }
 
     @RequestMapping(path = "/search", method = POST)
-    public ResponseEntity<List<Member>> searchMember(@RequestBody MemberSearchParameters memberSearchParameters) {
+    public ResponseEntity<List<Member>> searchMember(@Valid @RequestBody MemberSearchParameters memberSearchParameters) {
         List<Member> searchMembers = memberService.searchMembers(memberSearchParameters);
         if(searchMembers.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        else {
-            return ResponseEntity.ok(searchMembers);
+        return ResponseEntity.ok(searchMembers);
+    }
+
+    @RequestMapping(path = "/active", method = GET)
+    public ResponseEntity<List<Member>> listActiveMembers() {
+        List<Member> activeMembers = memberService.getActiveMembers();
+        if(activeMembers.isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.ok(activeMembers);
     }
 
 

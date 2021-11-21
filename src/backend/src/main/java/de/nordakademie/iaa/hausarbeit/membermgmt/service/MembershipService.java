@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -19,20 +21,27 @@ public class MembershipService {
         return membershipDAO.getAll();
     }
 
-    public void createMembership(Membership membership) throws EntityAlreadyPresentException {
-        try {
-            membershipDAO.save(membership);
-        } catch (ConstraintViolationException e) {
-            throw new EntityAlreadyPresentException();
+    public void createMembership(Membership membership) throws IllegalDateException {
+        if(membership.getStartDate().getDayOfYear() != 1 || (membership.getStartDate().getDayOfYear() != 357 && membership.getEndDate().getDayOfYear() != 356)) {
+            throw new IllegalDateException("Mitgliedschaft kann nur zum Ende des Jahres gewechselt werden und zum Anfang beginnen.");
         }
+        membershipDAO.save(membership);
     }
 
     public Membership loadMembership(Long id) {
         return membershipDAO.get(id).orElseThrow(EntityNotFoundException::new);
     }
 
-    public void updateMembership(Long id, Date startDate, Date endDate, Date cancellationDate, MembershipType membershipType) {
+    public void updateMembership(Long id, LocalDate startDate, LocalDate endDate, LocalDate cancellationDate, MembershipType membershipType) throws IllegalDateException {
         Membership membership = loadMembership(id);
+        if ((cancellationDate == null && endDate != null) || (cancellationDate != null && endDate == null) ) {
+            throw new IllegalDateException("Kündigungsdatum und Enddatum müssen gleichzeitig gesetzt sein.");
+        }
+        if(endDate != null) {
+            if (startDate.getDayOfYear() != 1 || (endDate.getDayOfYear() != 357 && endDate.getDayOfYear() != 356) ) {
+                throw new IllegalDateException("Mitgliedschaft kann nur zum Ende des Jahres gewechselt werden und zum Anfang beginnen.");
+            }
+        }
         membership.setMembershipType(membershipType);
         membership.setCancellationDate(cancellationDate);
         membership.setEndDate(endDate);

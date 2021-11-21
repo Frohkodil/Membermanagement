@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
 import java.math.BigDecimal;
 
 import static org.springframework.http.HttpStatus.CONFLICT;
@@ -25,7 +26,7 @@ public class FamilyDiscountController {
         return familyDiscountService.loadFamilyDiscount();
     }
     @RequestMapping(method = PUT)
-    public ResponseEntity<?> updateFamilyDiscount(@RequestBody BigDecimal discount) {
+    public ResponseEntity<?> updateFamilyDiscount(@Valid @RequestBody BigDecimal discount) {
         try {
             familyDiscountService.updateDiscount(discount);
             return ResponseEntity.status(CREATED).build();

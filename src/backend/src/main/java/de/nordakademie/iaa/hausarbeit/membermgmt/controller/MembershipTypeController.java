@@ -4,6 +4,7 @@ package de.nordakademie.iaa.hausarbeit.membermgmt.controller;
 import de.nordakademie.iaa.hausarbeit.membermgmt.model.Membership;
 import de.nordakademie.iaa.hausarbeit.membermgmt.model.MembershipType;
 import de.nordakademie.iaa.hausarbeit.membermgmt.service.EntityAlreadyPresentException;
+import de.nordakademie.iaa.hausarbeit.membermgmt.service.IllegalDataException;
 import de.nordakademie.iaa.hausarbeit.membermgmt.service.MembershipTypeService;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
@@ -15,12 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
+import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.CONFLICT;
-import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.*;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
@@ -31,25 +32,18 @@ public class MembershipTypeController {
 
 
     @RequestMapping(method = POST)
-    public ResponseEntity<?> createMembership(@RequestBody MembershipType membershipType) {
-        try {
-            membershipTypeService.createMembershipType(membershipType);
-            return ResponseEntity.status(CREATED).build();
-        } catch (ConstraintViolationException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        } catch (EntityAlreadyPresentException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
+    public ResponseEntity<?> createMembershipType(@Valid @RequestBody MembershipType membershipType) {
+        membershipTypeService.createMembershipType(membershipType);
+        return ResponseEntity.status(CREATED).build();
     }
 
     @RequestMapping(path = "/{id}", method = PUT)
-    public ResponseEntity<?> updateMembership(@RequestBody Long id, String name, BigDecimal annualFee) {
+    public ResponseEntity<?> updateMembership(@PathVariable("id") Long id,  @Valid @RequestBody MembershipType membershipType) {
         try{
-            membershipTypeService.updateMembershipType(id, name, annualFee);
+            membershipTypeService.updateMembershipType(id, membershipType.getName(), membershipType.getAnnualFee());
             return ResponseEntity.status(CREATED).build();
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(CONFLICT).build();
-
         }
     }
 

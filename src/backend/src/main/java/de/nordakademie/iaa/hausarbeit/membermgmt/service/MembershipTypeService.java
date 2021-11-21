@@ -30,12 +30,8 @@ public class MembershipTypeService {
         membershipType.setName(name);
     }
 
-    public void createMembershipType(MembershipType membershipType) throws EntityAlreadyPresentException {
-        try {
-            membershipTypeDAO.save(membershipType);
-        } catch (ConstraintViolationException e) {
-            throw new EntityAlreadyPresentException();
-        }
+    public void createMembershipType(MembershipType membershipType){
+        membershipTypeDAO.save(membershipType);
     }
 
     @Inject

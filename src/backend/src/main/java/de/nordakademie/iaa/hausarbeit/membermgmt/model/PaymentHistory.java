@@ -1,9 +1,12 @@
 package de.nordakademie.iaa.hausarbeit.membermgmt.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Past;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -16,9 +19,9 @@ public class PaymentHistory implements Serializable {
     private Long id;
     private boolean payed;
     private BigDecimal feePayed;
-    @Temporal(TemporalType.DATE)
     @Past
-    private Date dateOfPayment;
+    private LocalDate dateOfPayment;
+    @Min(value = 1990)
     private int year;
 
     public PaymentHistory() {
@@ -48,11 +51,11 @@ public class PaymentHistory implements Serializable {
         this.feePayed = feePayed;
     }
 
-    public Date getDateOfPayment() {
+    public LocalDate getDateOfPayment() {
         return dateOfPayment;
     }
 
-    public void setDateOfPayment(Date dateOfPayment) {
+    public void setDateOfPayment(LocalDate dateOfPayment) {
         this.dateOfPayment = dateOfPayment;
     }
 

@@ -5,7 +5,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 
@@ -34,9 +33,8 @@ public class Member implements Serializable {
     @Pattern(regexp = "[0-9]{1,5}[a-z]{2}")
     private String streetNumber;
     @Column(nullable = false)
-    @Temporal(TemporalType.DATE)
     @Past
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
     @NotBlank(message = "IBAN ist obligatorisch")
     @Size(min=22, max = 22)
     @Pattern(regexp = "[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[0-9]{7}([a-zA-Z0-9]?){0,16}")
@@ -46,8 +44,8 @@ public class Member implements Serializable {
     @OneToOne
     @Valid
     private Member familyMember;
-    @OneToOne
-    private Membership membership;
+    @OneToMany
+    private List<Membership> memberships;
 
     public Member() {
 
@@ -93,11 +91,11 @@ public class Member implements Serializable {
         this.street = street;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -125,12 +123,16 @@ public class Member implements Serializable {
         this.familyMember = familyMember;
     }
 
-    public Membership getMembership() {
-        return membership;
+    public List<Membership> getMemberships() {
+        return memberships;
     }
 
-    public void setMembership(Membership membership) {
-        this.membership = membership;
+    public void addMembership(Membership membership) {
+        memberships.add(membership);
+    }
+
+    public void setMemberships(List<Membership> memberships) {
+        this.memberships = memberships;
     }
 
     public String getCity() { return city; }
@@ -140,4 +142,8 @@ public class Member implements Serializable {
     public String getStreetNumber() { return streetNumber; }
 
     public void setStreetNumber(String streetNumber) { this.streetNumber = streetNumber; }
+
+    public Membership getActiveMembership() {
+        return memberships.get(memberships.size()-1);
+    }
 }

@@ -1,14 +1,16 @@
 package de.nordakademie.iaa.hausarbeit.membermgmt.model;
 
 
-import java.util.Date;
+import javax.validation.constraints.Past;
+import java.time.LocalDate;
 
 public class MemberSearchParameters {
     private String firstName;
     private String lastName;
     private String city;
     private String postalCode;
-    private Date dateOfBirth;
+    @Past
+    private LocalDate dateOfBirth;
     private MembershipType membershipType;
 
     public String getFirstName() {
@@ -43,11 +45,11 @@ public class MemberSearchParameters {
         this.postalCode = postalCode;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
