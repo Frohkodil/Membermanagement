@@ -5,6 +5,12 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+/**
+ * Membership entity.
+ *
+ * @author Siebo Vogel
+ */
+
 @Entity
 public class Membership implements Serializable{
 

@@ -25,18 +25,36 @@ import static org.springframework.http.HttpStatus.*;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
+/**
+ * REST controller for the MembershipType entity.
+ *
+ * @author Siebo Vogel
+ */
+
 @RestController
 @RequestMapping(path = "/MembershipTypes")
 public class MembershipTypeController {
     private MembershipTypeService membershipTypeService;
 
-
+    /**
+     * Creates a MembershipType.
+     *
+     * @param membershipType MembershipType to be created
+     * @return a response entity.
+     */
     @RequestMapping(method = POST)
     public ResponseEntity<?> createMembershipType(@Valid @RequestBody MembershipType membershipType) {
         membershipTypeService.createMembershipType(membershipType);
         return ResponseEntity.status(CREATED).build();
     }
 
+    /**
+     * Updates a MembershipType.
+     *
+     * @param id ID of the MembershipType to be updated
+     * @param membershipType updated MembershipType
+     * @return a response entity.
+     */
     @RequestMapping(path = "/{id}", method = PUT)
     public ResponseEntity<?> updateMembership(@PathVariable("id") Long id,  @Valid @RequestBody MembershipType membershipType) {
         try{
@@ -47,11 +65,22 @@ public class MembershipTypeController {
         }
     }
 
+    /**
+     * Lists all MembershipTypes.
+     *
+     * @return List of MembershipTypes.
+     */
     @RequestMapping(method = GET)
     public List<MembershipType> listMembershipTypes() {
         return membershipTypeService.listMembershipTypes();
     }
 
+    /**
+     * Creates a Membership.
+     *
+     * @param id ID of the room the be found.
+     * @return a response entity.
+     */
     @RequestMapping(path="/{id}", method = GET)
     public ResponseEntity<?> loadMembership(@PathVariable("id") Long id) {
         try {

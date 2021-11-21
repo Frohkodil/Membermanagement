@@ -3,8 +3,15 @@ package de.nordakademie.iaa.hausarbeit.membermgmt.model;
 
 import javax.validation.constraints.Past;
 import java.time.LocalDate;
+import java.util.List;
 
-public class MemberSearchParameters {
+/**
+ *  MemberSearchParameter class with search parameters for Member
+ *
+ * @author Siebo Vogel
+ */
+
+public class MemberSearchParameter {
     private String firstName;
     private String lastName;
     private String city;
@@ -12,6 +19,9 @@ public class MemberSearchParameters {
     @Past
     private LocalDate dateOfBirth;
     private MembershipType membershipType;
+    private Boolean openPayments;
+    private Boolean active;
+
 
     public String getFirstName() {
         return firstName;
@@ -60,4 +70,12 @@ public class MemberSearchParameters {
     public void setMembershipType(MembershipType membershipType) {
         this.membershipType = membershipType;
     }
+
+    public Boolean getOpenPayments() {return openPayments;}
+
+    public void setOpenPayments(Boolean openPayments) {this.openPayments = openPayments;}
+
+    public Boolean getActive() {return active;}
+
+    public void setActive(Boolean active) {this.active = active;}
 }

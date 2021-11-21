@@ -7,6 +7,11 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Member entity.
+ *
+ * @author Siebo Vogel
+ */
 
 @Entity
 public class Member implements Serializable {
@@ -37,7 +42,7 @@ public class Member implements Serializable {
     private LocalDate dateOfBirth;
     @NotBlank(message = "IBAN ist obligatorisch")
     @Size(min=22, max = 22)
-    @Pattern(regexp = "[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[0-9]{7}([a-zA-Z0-9]?){0,16}")
+    @Pattern(regexp = "[a-zA-Z]{2}[0-9]{2}[0-9]{4}[0-9]{7}([0-9]?){0,16}")
     private String iban;
     @OneToMany
     private List<PaymentHistory> paymentHistories;

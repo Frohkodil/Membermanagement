@@ -2,10 +2,9 @@ package de.nordakademie.iaa.hausarbeit.membermgmt.controller;
 
 
 import de.nordakademie.iaa.hausarbeit.membermgmt.model.Member;
-import de.nordakademie.iaa.hausarbeit.membermgmt.model.MemberSearchParameters;
+import de.nordakademie.iaa.hausarbeit.membermgmt.model.MemberSearchParameter;
 import de.nordakademie.iaa.hausarbeit.membermgmt.model.Membership;
 import de.nordakademie.iaa.hausarbeit.membermgmt.service.*;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +19,11 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
+/**
+ * REST controller for Member entity.
+ *
+ * @author Siebo Vogel
+ */
 
 @RestController
 @RequestMapping(path="/members")
@@ -28,17 +32,30 @@ public class MemberController {
     private MemberService memberService;
     private MembershipService membershipService;
 
+
+    /**
+     * Creates a new Member with a membership.
+     * @param member Member to be created
+     * @param membership Membership for the newly created member
+     * @return a response entity.
+     */
     @RequestMapping(method = POST)
     public ResponseEntity<?> createMember(@Valid @RequestBody Member member, @Valid @RequestBody Membership membership) {
         try {
-            memberService.createMember(member);
             membershipService.createMembership(membership);
+            memberService.createMember(member);
             return ResponseEntity.status(CREATED).build();
         } catch (IllegalDateException e) {
             return ResponseEntity.status(BAD_REQUEST).body(e.getMessage());
         }
     }
 
+    /**
+     * Updates a Member.
+     * @param member Member to be updated
+     * @param id ID of the Member to be updated
+     * @return a response entity.
+     */
     @RequestMapping(path = "/{id}", method = PUT)
     public ResponseEntity<?> updateMember(@PathVariable("id") Long id, @Valid @RequestBody Member member) {
         try {
@@ -50,6 +67,11 @@ public class MemberController {
         }
     }
 
+    /**
+     * Deletes a Member.
+     * @param id ID of the Member to be deleted
+     * @return a response entity.
+     */
     @RequestMapping(path = "/{id}", method = DELETE)
     public ResponseEntity<?> deleteMember(@PathVariable("id") Long id) {
         try {
@@ -64,11 +86,20 @@ public class MemberController {
         }
     }
 
+    /**
+     * Lists all Members.
+     * @return a List of Members.
+     */
     @RequestMapping(method = GET)
     public List<Member> listMembers() {
         return memberService.listMembers();
     }
 
+    /**
+     * Gets a Member.
+     * @param id ID of the Member to get
+     * @return a Member.
+     */
     @RequestMapping(path = "/{id}", method = GET)
     public ResponseEntity<Member> loadMember(@PathVariable("id") Long id) {
         try {
@@ -79,15 +110,24 @@ public class MemberController {
         }
     }
 
+    /**
+     * Searches Members.
+     * @param memberSearchParameter Serach Parameters for the search
+     * @return a List of Members.
+     */
     @RequestMapping(path = "/search", method = POST)
-    public ResponseEntity<List<Member>> searchMember(@Valid @RequestBody MemberSearchParameters memberSearchParameters) {
-        List<Member> searchMembers = memberService.searchMembers(memberSearchParameters);
+    public ResponseEntity<List<Member>> searchMember(@Valid @RequestBody MemberSearchParameter memberSearchParameter) {
+        List<Member> searchMembers = memberService.searchMembers(memberSearchParameter);
         if(searchMembers.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(searchMembers);
     }
 
+    /**
+     * Lists active Members.
+     * @return a List of Members.
+     */
     @RequestMapping(path = "/active", method = GET)
     public ResponseEntity<List<Member>> listActiveMembers() {
         List<Member> activeMembers = memberService.getActiveMembers();

@@ -5,12 +5,19 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
+
+/**
+ * The familydiscount DAO that manages all persistence functionality.
+ *
+ * @author Siebo Vogel
+ */
 
 @Repository
 public class FamilyDiscountDAO {
+    /**
+     * The current entity manager.
+     */
     private EntityManager entityManager;
 
     @PersistenceContext
@@ -18,14 +25,13 @@ public class FamilyDiscountDAO {
         this.entityManager = entityManager;
     }
 
-    public Optional<FamilyDiscount> get(Long id) {
+    /**
+     * Returns the familydiscount identified by the given id.
+     *
+     * @return the found entity or {@code null} if no entity was found with given identifier.
+     */
+    public Optional<FamilyDiscount> get() {
         FamilyDiscount familydiscount = entityManager.find(FamilyDiscount.class, 1L);
         return Optional.ofNullable(familydiscount);
     }
-
-    public void save(FamilyDiscount familyDiscount) {
-        entityManager.persist(familyDiscount);
-    }
-
-
 }

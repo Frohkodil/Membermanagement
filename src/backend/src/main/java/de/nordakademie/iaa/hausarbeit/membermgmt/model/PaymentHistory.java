@@ -1,13 +1,21 @@
 package de.nordakademie.iaa.hausarbeit.membermgmt.model;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Date;
+
+/**
+ * PaymentHistory entity.
+ *
+ * @author Siebo Vogel
+ */
 
 @Entity
 public class PaymentHistory implements Serializable {
@@ -23,6 +31,11 @@ public class PaymentHistory implements Serializable {
     private LocalDate dateOfPayment;
     @Min(value = 1990)
     private int year;
+    @NotNull(message = "Zu einer Zahlung sollte ein Mitglied gehören.")
+    @JoinColumn
+    @ManyToOne
+    @Valid
+    private Member member;
 
     public PaymentHistory() {
     }
@@ -67,4 +80,11 @@ public class PaymentHistory implements Serializable {
         this.year = year;
     }
 
+    public Member getMember() {
+        return member;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
+    }
 }

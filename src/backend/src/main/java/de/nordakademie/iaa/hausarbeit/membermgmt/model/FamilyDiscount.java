@@ -7,6 +7,12 @@ import javax.persistence.Id;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+/**
+ * FamilyDiscount entity.
+ *
+ * @author Siebo Vogel
+ */
+
 @Entity
 public class FamilyDiscount implements Serializable {
 

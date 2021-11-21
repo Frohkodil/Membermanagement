@@ -19,16 +19,34 @@ import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
+/**
+ * REST controller for the PaymentHistory entity.
+ *
+ * @author Siebo Vogel
+ */
+
+
 @RestController
 @RequestMapping(path = "/paymenthistories")
 public class PaymentHistoryController {
     private PaymentHistoryService paymentHistoryService;
 
+    /**
+     * Lists all PaymentHistories.
+     *
+     * @return a response entity with a List of PaymentHistories.
+     */
     @RequestMapping(method = GET)
     public ResponseEntity<List<PaymentHistory>> listPaymentHistories() {
         return ResponseEntity.ok(paymentHistoryService.listPaymentHistories());
     }
 
+    /**
+     * Gets a PaymentHistory by its ID.
+     *
+     * @param id ID of the PaymentHistory
+     * @return a response entity.
+     */
     @RequestMapping(path = "/id/{id}", method = GET)
     public ResponseEntity<PaymentHistory> loadPaymentHistory(@PathVariable("id") Long id) {
         try {
@@ -39,11 +57,24 @@ public class PaymentHistoryController {
         }
     }
 
-    @RequestMapping(path = "/year/{year}", method = GET)
-    public List<PaymentHistory> listPaymentHistoriesByYear(@PathVariable("year") int year) {
-        return paymentHistoryService.getPaymentHistoryByYear(year);
+    /**
+     * Lists PaymentHistorys by year and its payment status.
+     *
+     * @param year Year of the paymenthistories
+     * @param payed Wether the amount was payed
+     * @return a response entity with a list of the PaymentHistories.
+     */
+    @RequestMapping(path = "/year/{year}/payed/{payed}", method = GET)
+    public ResponseEntity<?> listPaymentHistoriesByYear(@PathVariable int year, @PathVariable boolean payed) {
+        return ResponseEntity.ok(paymentHistoryService.getPaymentHistoryByYearAndPayment(year, payed));
     }
 
+    /**
+     * Updates a PaymentHistory by its ID.
+     *
+     * @param id ID of the PaymentHistory.
+     * @return a response entity.
+     */
     @RequestMapping(path = "/id/{id}",method = PUT)
     public ResponseEntity<?> updatePaymentHistory(@PathVariable("id") Long id, @Valid @RequestBody PaymentHistory paymentHistory) {
         try {
@@ -54,6 +85,12 @@ public class PaymentHistoryController {
         }
     }
 
+    /**
+     * Creates a PaymentHistory.
+     *
+     * @param paymentHistory PaymentHistory to be created.
+     * @return a response entity.
+     */
     @RequestMapping(method = POST)
     public ResponseEntity<?> createPaymentHistory(@Valid @RequestBody PaymentHistory paymentHistory) {
         paymentHistoryService.createPaymentHistory(paymentHistory);

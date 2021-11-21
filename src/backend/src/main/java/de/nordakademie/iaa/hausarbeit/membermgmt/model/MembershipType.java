@@ -10,6 +10,12 @@ import javax.persistence.Id;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+/**
+ * MembershipType entity.
+ *
+ * @author Siebo Vogel
+ */
+
 @Entity
 public class MembershipType implements Serializable {
 
@@ -19,6 +25,7 @@ public class MembershipType implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @NaturalId
+    @UniqueElements
     private String name;
     private BigDecimal annualFee;
 
