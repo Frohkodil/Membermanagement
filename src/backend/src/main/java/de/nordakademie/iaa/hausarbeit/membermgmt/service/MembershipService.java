@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
@@ -16,6 +17,7 @@ import java.util.List;
  * @author Siebo Vogel
  */
 @Service
+@Transactional
 public class MembershipService {
     private MembershipDAO membershipDAO;
 

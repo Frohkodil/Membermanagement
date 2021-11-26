@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 
 
@@ -15,6 +16,7 @@ import java.math.BigDecimal;
  * @author Siebo Vogel
  */
 @Service
+@Transactional
 public class FamilyDiscountService {
 
     private FamilyDiscountDAO familyDiscountDAO;

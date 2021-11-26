@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
  * @author Siebo Vogel
  */
 @Service
+@Transactional
 public class MembershipTypeService {
 
     private MembershipTypeDAO membershipTypeDAO;
