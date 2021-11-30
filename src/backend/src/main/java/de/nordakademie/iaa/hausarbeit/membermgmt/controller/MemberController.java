@@ -43,6 +43,7 @@ public class MemberController {
     public ResponseEntity<?> createMember(@Valid @RequestBody Member member, @Valid @RequestBody Membership membership) {
         try {
             membershipService.createMembership(membership);
+            member.addMembership(membership);
             memberService.createMember(member);
             return ResponseEntity.status(CREATED).build();
         } catch (IllegalDateException e) {
